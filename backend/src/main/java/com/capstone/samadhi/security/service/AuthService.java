@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -47,7 +49,8 @@ public class AuthService {
                 dto.getGender().name(),
                 dto.getBirth(),
                 dto.getHeight(),
-                dto.getWeight()
+                dto.getWeight(),
+                new ArrayList<>()
         ));
 
         return new ResponseEntity<>(new ResponseDto<String>(true, "성공"), HttpStatus.OK);
