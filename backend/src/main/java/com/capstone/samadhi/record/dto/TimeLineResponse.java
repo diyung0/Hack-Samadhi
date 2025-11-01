@@ -14,7 +14,7 @@ public record TimeLineResponse(
         String pose,
 
         @Schema(description = "해당 구간 점수", example = "95")
-        int score
+        float score
 ) {
 
     public static TimeLineResponse from(TimeLine timeLine) {

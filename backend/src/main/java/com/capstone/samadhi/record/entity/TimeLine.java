@@ -22,7 +22,7 @@ public class TimeLine extends TimeStamp {
     private int youtube_start_sec;
     private int youtube_end_sec;
     private String pose;
-    private int score;
+    private float score;
 
     @ManyToOne
     @JoinColumn(name="recordId")

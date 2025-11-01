@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public record RecordRequest(
@@ -22,7 +23,7 @@ public record RecordRequest(
         @PositiveOrZero(message = "점수는 0 이상이어야 합니다.")
         int total_score,
 
-        @Valid // 리스트 내부의 DTO(TimeLineRequest)까지 유효성 검사를 진행
+        @Valid
         @NotEmpty(message = "타임라인 정보는 최소 1개 이상 포함되어야 합니다.")
         List<TimeLineRequest> timeLineList
 ) {
@@ -33,6 +34,7 @@ public record RecordRequest(
                 .workingout_time(Duration.ofSeconds(workingout_time))
                 .youtube_url(this.youtube_url)
                 .total_score(this.total_score)
+                .timeLineList(new ArrayList<>())
                 .build();
         record.addUser(user);
         if (this.timeLineList != null) {

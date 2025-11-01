@@ -1,6 +1,7 @@
 package com.capstone.samadhi.record.controller;
 
 import com.capstone.samadhi.common.ResponseDto;
+import com.capstone.samadhi.common.SecurityUtil;
 import com.capstone.samadhi.record.dto.RecordRequest;
 import com.capstone.samadhi.record.dto.RecordResponse;
 import com.capstone.samadhi.record.service.RecordService;
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.security.Security;
 import java.util.List;
 
 @RestController
@@ -37,28 +39,24 @@ public class RecordController {
             @ApiResponse(responseCode="400", description = "입력값 유효성 검사 실패")
     })
     public ResponseEntity<ResponseDto<RecordResponse>> createMessage(
-            @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody RecordRequest request
     ){
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(recordService.save(userDetails.getUsername(), request));
+                .body(recordService.save(SecurityUtil.getCurrentUser(), request));
     }
 
     @GetMapping("/{record_id}")
     @Operation(summary = "특정 레코드 조회", description = "특정 레코드를 조회할 때 사용하는 API")
     @ApiResponses(value={
-            // 2. (수정) content 속성 제거
             @ApiResponse(responseCode="200", description = "레코드 조회 성공"),
             @ApiResponse(responseCode="403", description = "접근 권한 없음"),
             @ApiResponse(responseCode="404", description = "레코드 찾을 수 없음")
     })
     public ResponseEntity<ResponseDto<RecordResponse>> getRecordById(
-            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("record_id") Long id
     ) throws AccessDeniedException {
-        return ResponseEntity.ok(recordService.findById(userDetails.getUsername(), id));
+        return ResponseEntity.ok(recordService.findById(SecurityUtil.getCurrentUser(), id));
     }
 
     @GetMapping("") // <-- (수정 권장) /my
@@ -68,12 +66,11 @@ public class RecordController {
             @ApiResponse(responseCode = "200", description = "조회 성공")
     })
     public ResponseEntity<ResponseDto<List<RecordResponse>>> getMyRecords(
-            @AuthenticationPrincipal UserDetails customUserDetails,
             @PageableDefault(size = 8, sort = "createdAt", direction = Sort.Direction.DESC)
             Pageable pageable
     ) {
-        String userEmail = customUserDetails.getUsername();
-        ResponseDto<List<RecordResponse>> responseBody = recordService.findByUser(userEmail, pageable);
+
+        ResponseDto<List<RecordResponse>> responseBody = recordService.findByUser(SecurityUtil.getCurrentUser(), pageable);
 
         return ResponseEntity.ok(responseBody);
     }

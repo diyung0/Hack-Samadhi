@@ -26,7 +26,7 @@ public class Record extends TimeStamp {
 
     private Duration workingout_time;
     private String youtube_url;
-    private int total_score;
+    private float total_score;
 
     @ManyToOne
     @JoinColumn(name="id")
