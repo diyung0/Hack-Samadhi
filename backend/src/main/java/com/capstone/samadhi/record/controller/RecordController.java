@@ -32,7 +32,7 @@ public class RecordController {
     @PostMapping("/")
     @Operation(summary = "레포트 생성", description = "레포트를 생성할 때 사용하는 API")
     @ApiResponses(value={
-            // 1. (수정) 201 Created로 변경, content 속성 제거
+
             @ApiResponse(responseCode="201", description = "레포트 생성 성공"),
             @ApiResponse(responseCode="400", description = "입력값 유효성 검사 실패")
     })
@@ -40,7 +40,7 @@ public class RecordController {
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody RecordRequest request
     ){
-        // 201 Created로 응답
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(recordService.save(userDetails.getUsername(), request));
