@@ -12,7 +12,7 @@ import java.util.Date;
 public class SignUpDto {
     @Schema(description = "아이디")
     private String id;
-    @Schema(description = "비밀번호")
+    @Schema(description = "비밀번호") //test
     private String pwd;
     @Schema(description = "닉네임")
     private String nickname;
