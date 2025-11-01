@@ -26,4 +26,10 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage());
         return new ResponseEntity<>(new ResponseDto<String>(false, "내부 오류가 발생했습니다"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(NumberFormatException.class)
+    ResponseEntity<?> handleNumberFormatException(Exception ex) {
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(new ResponseDto<String>(false, "타입이 옳지 않습니다"), HttpStatus.BAD_REQUEST);
+    }
 }

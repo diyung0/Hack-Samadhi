@@ -43,6 +43,20 @@ public class AuthService {
             }
         }
 
+        float heightToFloat = 0;
+        float weightToFloat = 0;
+
+        try {
+            if(dto.getHeight() != null && !dto.getHeight().isEmpty()) {
+                heightToFloat = Float.parseFloat(dto.getHeight());
+            }
+            if(dto.getWeight() != null && !dto.getWeight().isEmpty()) {
+                weightToFloat = Float.parseFloat(dto.getWeight());
+            }
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("height, width값은 숫자 형식이여야 합니다");
+        }
+
         userRepository.save(new User(
                 dto.getId(),
                 passwordEncoder.encode(dto.getPwd()),
@@ -50,8 +64,8 @@ public class AuthService {
                 dto.getNickname(),
                 dto.getGender() == null ? null : dto.getGender().name(),
                 dto.getBirth(),
-                dto.getHeight(),
-                dto.getWeight(),
+                heightToFloat,
+                weightToFloat,
                 new ArrayList<>()
         ));
 
@@ -78,8 +92,13 @@ public class AuthService {
         if(dto.getNickname() != null) user.setNickname(dto.getNickname());
         if(dto.getGender() != null) user.setGender(dto.getGender().name());
         if(dto.getBirth() != null) user.setBirth(dto.getBirth());
-        if(dto.getWeight() != 0) user.setWeight(dto.getWeight());
-        if(dto.getHeight() != 0) user.setHeight(dto.getHeight());
+        try {
+            if(dto.getWeight() != null && !dto.getWeight().isEmpty()) user.setWeight(Float.parseFloat(dto.getWeight()));
+            if(dto.getHeight() != null && !dto.getHeight().isEmpty() ) user.setHeight(Float.parseFloat(dto.getHeight()));
+        } catch (NumberFormatException e) {
+            log.error("타입 에러: {}", e.getMessage());
+            throw new NumberFormatException("타입이 맞지 않습니다");
+        }
         if(dto.getProfile() != null) {
             try {
                 String url = s3Service.uploadFile(dto.getProfile());

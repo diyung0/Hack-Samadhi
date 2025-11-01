@@ -22,9 +22,9 @@ public class SignUpDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birth;
     @Schema(description = "몸무게")
-    private float weight;
+    private String weight;
     @Schema(description = "키")
-    private float height;
+    private String height;
     @Schema(description = "프로필 사진 데이터")
     private MultipartFile profile;
 
