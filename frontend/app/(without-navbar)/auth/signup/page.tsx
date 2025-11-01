@@ -48,11 +48,7 @@ export default function SignupPage() {
     data.append("profile", new Blob([]), "");
 
     try {
-      await api.post("/auth/signup", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await api.post("/auth/sign-up", data);
       toast.success("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
       router.push("/auth/login");
     } catch (error) {
@@ -101,21 +97,21 @@ export default function SignupPage() {
           <div className='grid grid-cols-2 gap-4'>
             <div className='grid gap-2'>
               <Label htmlFor='gender'>
-                성별 <span className="text-gray-500">(선택)</span>
+                성별 <span className='text-gray-500'>(선택)</span>
               </Label>
               <Select onValueChange={handleSelectChange}>
                 <SelectTrigger id='gender'>
                   <SelectValue placeholder='성별 선택' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='MALE'>남성</SelectItem>
-                  <SelectItem value='FEMALE'>여성</SelectItem>
+                  <SelectItem value='m'>남성</SelectItem>
+                  <SelectItem value='f'>여성</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className='grid gap-2'>
               <Label htmlFor='birth'>
-                생년월일 <span className="text-gray-500">(선택)</span>
+                생년월일 <span className='text-gray-500'>(선택)</span>
               </Label>
               <Input
                 id='birth'
@@ -128,7 +124,7 @@ export default function SignupPage() {
           <div className='grid grid-cols-2 gap-4'>
             <div className='grid gap-2'>
               <Label htmlFor='height'>
-                키 (cm) <span className="text-gray-500">(선택)</span>
+                키 (cm) <span className='text-gray-500'>(선택)</span>
               </Label>
               <Input
                 id='height'
@@ -140,7 +136,7 @@ export default function SignupPage() {
             </div>
             <div className='grid gap-2'>
               <Label htmlFor='weight'>
-                몸무게 (kg) <span className="text-gray-500">(선택)</span>
+                몸무게 (kg) <span className='text-gray-500'>(선택)</span>
               </Label>
               <Input
                 id='weight'
