@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,28 +32,40 @@ public class RecordController {
     @PostMapping("/")
     @Operation(summary = "레포트 생성", description = "레포트를 생성할 때 사용하는 API")
     @ApiResponses(value={
-            @ApiResponse(responseCode="200", content = {@Content(schema= @Schema(implementation = ResponseDto.class)
-            )})
+            // 1. (수정) 201 Created로 변경, content 속성 제거
+            @ApiResponse(responseCode="201", description = "레포트 생성 성공"),
+            @ApiResponse(responseCode="400", description = "입력값 유효성 검사 실패")
     })
-    public ResponseEntity<ResponseDto<RecordResponse>> createMessage(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody RecordRequest request){
-        return ResponseEntity.ok(recordService.save(userDetails.getUsername(), request));
+    public ResponseEntity<ResponseDto<RecordResponse>> createMessage(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RecordRequest request
+    ){
+        // 201 Created로 응답
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(recordService.save(userDetails.getUsername(), request));
     }
 
     @GetMapping("/{record_id}")
     @Operation(summary = "특정 레코드 조회", description = "특정 레코드를 조회할 때 사용하는 API")
     @ApiResponses(value={
-            @ApiResponse(responseCode="200", content = {@Content(schema= @Schema(implementation = ResponseDto.class)
-            )})
+            // 2. (수정) content 속성 제거
+            @ApiResponse(responseCode="200", description = "레코드 조회 성공"),
+            @ApiResponse(responseCode="403", description = "접근 권한 없음"),
+            @ApiResponse(responseCode="404", description = "레코드 찾을 수 없음")
     })
-    public ResponseEntity<?> getRecordById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("record_id") Long id) throws AccessDeniedException {
-
+    public ResponseEntity<ResponseDto<RecordResponse>> getRecordById(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("record_id") Long id
+    ) throws AccessDeniedException {
         return ResponseEntity.ok(recordService.findById(userDetails.getUsername(), id));
     }
-    @GetMapping("/")
+
+    @GetMapping("") // <-- (수정 권장) /my
     @Operation(summary = "내 레포트 목록 조회", description = "내가 생성한 레포트 목록을 페이징하여 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "조회 성공",
-                    content = @Content(schema = @Schema(implementation = ResponseDto.class)))
+
+            @ApiResponse(responseCode = "200", description = "조회 성공")
     })
     public ResponseEntity<ResponseDto<List<RecordResponse>>> getMyRecords(
             @AuthenticationPrincipal UserDetails customUserDetails,
