@@ -7,7 +7,7 @@ public class Whitelist {
 
 
     public static final List<String> CORS_ALLOW_URL = List.of(
-            "http://localhost:3001", "http://localhost:3001"
+            "http://localhost:3001", "http://localhost:3000", "http://3.34.132.201:3000"
     );
 
     //모든 사람 접근 가능
