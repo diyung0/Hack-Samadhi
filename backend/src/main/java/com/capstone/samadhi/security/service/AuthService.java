@@ -48,7 +48,7 @@ public class AuthService {
                 passwordEncoder.encode(dto.getPwd()),
                 url,
                 dto.getNickname(),
-                dto.getGender().name(),
+                dto.getGender() == null ? null : dto.getGender().name(),
                 dto.getBirth(),
                 dto.getHeight(),
                 dto.getWeight(),

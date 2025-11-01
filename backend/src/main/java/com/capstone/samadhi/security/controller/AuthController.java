@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/auth")
 @Tag(name = "인증/인가", description = "회원 등록 및 회원 가입")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -53,6 +55,7 @@ public class AuthController {
 
             return new ResponseEntity<>(new ResponseDto<String>(true, dto.getId()), HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
             return new ResponseEntity<>(new ResponseDto<String>(false, "로그인 정보가 일치하지 않습니다"), HttpStatus.UNAUTHORIZED);
         }
     }
