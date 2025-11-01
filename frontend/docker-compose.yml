@@ -1,0 +1,10 @@
+version: "3"
+services:
+  samadhi-frontend:
+    image: 816069131609.dkr.ecr.ap-northeast-2.amazonaws.com/samadhi-frontend:latest
+    container_name: samadhi-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: always
