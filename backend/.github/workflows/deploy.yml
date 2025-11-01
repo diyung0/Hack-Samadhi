@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/**'
 
 jobs:
   deploy:
@@ -27,8 +29,8 @@ jobs:
       - name: Build Docker image
         run: |
           IMAGE_URI=${{steps.login-ecr.outputs.registry}}/samadhi-api:latest
-          docker build -t samadhi-api:latest .
-          docker tag samadhi-api:latest ${{steps.login-ecr.outputs.registry}}/samadhi-api:latest
+          docker build -t samadhi-api:latest ./backend
+          docker tag samadhi-api:latest $IMAGE_URI
 
       - name: push to ecr
         run: |
