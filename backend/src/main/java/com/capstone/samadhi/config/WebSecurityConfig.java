@@ -37,7 +37,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtAuthEntryPoint authEntryPoint;
-    private final CustomUserDetailService userDetailService;
+    private final CustomUserDetailService userDetailService; //test
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtUtils jwtUtils;
 
