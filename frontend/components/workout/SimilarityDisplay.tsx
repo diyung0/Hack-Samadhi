@@ -1,12 +1,14 @@
-import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 interface SimilarityDisplayProps {
   similarityValue: number;
+  showFeedback?: boolean;
 }
 
-export default function SimilarityDisplay({
+export function SimilarityDisplay({
   similarityValue,
+  showFeedback = true,
 }: SimilarityDisplayProps) {
   const [displayValue, setDisplayValue] = useState(similarityValue);
   const lastUpdateRef = useRef(Date.now());
@@ -32,12 +34,24 @@ export default function SimilarityDisplay({
 
   return (
     <AnimatePresence>
-      <div className="fixed bottom-8 right-8 z-30">
-        <div className="relative bg-transparent backdrop-blur-md rounded-2xl shadow-xl p-8 min-w-[600px]">
-          <div className="text-center text-white/90 font-bold">
-            <div className="text-[70px]">
-              <span className=" mb-3">{feedback.emoji} </span>
-              <span className="">{feedback.text}</span>
+      <div className='fixed bottom-8 right-8 z-30'>
+        <div className='relative bg-transparent backdrop-blur-md rounded-2xl shadow-xl p-8 min-w-[600px]'>
+          <div className='text-center text-white/90 font-bold'>
+            <div className='text-[70px]'>
+              {showFeedback ? (
+                <>
+                  <span className=' mb-3'>{feedback.emoji} </span>
+                  <span className=''>{feedback.text}</span>
+                </>
+              ) : (
+                <div
+                  className='text-[70px] font-bold text-white/80 mb-2  text-right'
+                  key={displayValue}
+                >
+                  <span className='mr-3'>{feedback.emoji}</span>
+                  {displayValue.toFixed(1)}점
+                </div>
+              )}
             </div>
           </div>
         </div>

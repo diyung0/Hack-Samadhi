@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import TimelineClipper, {
   type TimelineClipperRef,
 } from "@/components/timeline/TimelineClipper";
-import SimilarityDisplay from "@/components/workout/SimilarityDisplay";
+import { SimilarityDisplay } from "@/components/workout/SimilarityDisplay";
 import api from "@/lib/axios";
 
 function useWebcamLifecycle(isReady: boolean) {
@@ -135,8 +135,8 @@ function useWebcamVideoElement(
 
 function VideoSkeleton() {
   return (
-    <div className="w-full aspect-video bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">
-      <div className="text-gray-500">로딩 중...</div>
+    <div className='w-full aspect-video bg-gray-800 rounded-lg animate-pulse flex items-center justify-center'>
+      <div className='text-gray-500'>로딩 중...</div>
     </div>
   );
 }
@@ -324,44 +324,54 @@ function WorkoutContent() {
       : `${100 - settings.videoSize}%`
     : "0%";
 
+  const [showFeedback, setShowFeedback] = useState(true);
+
   if (!isReady) {
     return (
-      <div className="flex flex-col h-screen bg-black text-white">
-        <header className="flex items-center justify-between px-4 py-2 bg-black/80 backdrop-blur-sm z-40 shrink-0">
+      <div className='flex flex-col h-screen bg-black text-white'>
+        <header className='flex items-center justify-between px-4 py-2 bg-black/80 backdrop-blur-sm z-40 shrink-0'>
           <Button
-            variant="outline"
+            variant='outline'
             disabled
-            className="flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white/50"
+            className='flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white/50'
           >
-            <FiSettings className="w-4 h-4" />
-            <span className="hidden sm:inline">설정</span>
+            <FiSettings className='w-4 h-4' />
+            <span className='hidden sm:inline'>설정</span>
           </Button>
 
-          <div className="flex-1"></div>
+          <button
+            onClick={() => setShowFeedback(!showFeedback)}
+            disabled={!isReady}
+            className='w-10 h-10 opacity-70 hover:opacity-100 transition-opacity'
+          >
+            {showFeedback ? "💯" : "😊"}
+          </button>
+
+          <div className='flex-1'></div>
 
           <Button
-            variant="outline"
+            variant='outline'
             disabled
-            className="flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white/50"
+            className='flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white/50'
           >
-            <FiX className="w-4 h-4" />
-            <span className="hidden sm:inline">종료</span>
+            <FiX className='w-4 h-4' />
+            <span className='hidden sm:inline'>종료</span>
           </Button>
         </header>
 
-        <main className="flex flex-1 overflow-hidden">
-          <div className="flex-1 p-4 flex items-start justify-center pt-60">
+        <main className='flex flex-1 overflow-hidden'>
+          <div className='flex-1 p-4 flex items-start justify-center pt-60'>
             <VideoSkeleton />
           </div>
-          <div className="flex-1 p-4 flex items-start justify-center pt-60">
+          <div className='flex-1 p-4 flex items-start justify-center pt-60'>
             <VideoSkeleton />
           </div>
         </main>
 
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
-          <div className="p-8 text-center bg-gray-900 rounded-lg shadow-lg border border-white/10">
-            <div className="w-10 h-10 mx-auto mb-4 border-4 border-blue-400 rounded-full border-t-transparent animate-spin"></div>
-            <p className="text-gray-300">운동 데이터를 준비 중입니다...</p>
+        <div className='absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50'>
+          <div className='p-8 text-center bg-gray-900 rounded-lg shadow-lg border border-white/10'>
+            <div className='w-10 h-10 mx-auto mb-4 border-4 border-blue-400 rounded-full border-t-transparent animate-spin'></div>
+            <p className='text-gray-300'>운동 데이터를 준비 중입니다...</p>
           </div>
         </div>
       </div>
@@ -369,46 +379,54 @@ function WorkoutContent() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
-      <header className="flex items-center justify-between px-4 py-2 bg-black/80 backdrop-blur-sm z-40 shrink-0">
+    <div className='flex flex-col h-screen bg-black text-white'>
+      <header className='flex items-center justify-between px-4 py-2 bg-black/80 backdrop-blur-sm z-40 shrink-0'>
         <Button
-          variant="outline"
+          variant='outline'
           onClick={() => setIsSettingsOpen(true)}
-          className="flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black"
+          className='flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white hover:bg-white hover:text-black'
         >
-          <FiSettings className="w-4 h-4" />
-          <span className="hidden sm:inline">설정</span>
+          <FiSettings className='w-4 h-4' />
+          <span className='hidden sm:inline'>설정</span>
         </Button>
 
-        <div className="flex-1"></div>
+        <button
+          onClick={() => setShowFeedback(!showFeedback)}
+          disabled={!isReady}
+          className='w-10 h-10 opacity-70 hover:opacity-100 transition-opacity'
+        >
+          {showFeedback ? "💯" : "😊"}
+        </button>
+
+        <div className='flex-1'></div>
 
         <Button
-          variant="outline"
+          variant='outline'
           onClick={handleExit}
-          className="flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white hover:text-white hover:bg-red-600 hover:border-red-600"
+          className='flex items-center justify-center gap-2 w-20 bg-white/10 border-white/20 text-white hover:text-white hover:bg-red-600 hover:border-red-600'
         >
-          <FiX className="w-4 h-4" />
-          <span className="hidden sm:inline">종료</span>
+          <FiX className='w-4 h-4' />
+          <span className='hidden sm:inline'>종료</span>
         </Button>
       </header>
 
-      <main className="flex flex-1 overflow-hidden">
+      <main className='flex flex-1 overflow-hidden'>
         <div
-          className="transition-all duration-300 flex items-start justify-center bg-black h-full pt-8"
+          className='transition-all duration-300 flex items-start justify-center bg-black h-full pt-8'
           style={{
             width: videoContainerWidth,
             padding: settings.hideVideo ? "0" : "1rem",
             overflow: "hidden",
           }}
         >
-          <div className="w-full max-w-full">
+          <div className='w-full max-w-full'>
             <VideoCanvas
               videoRef={videoRef}
               isInitialized={isInitialized}
               landmarker={videoLandmarker}
             />
             {!isScreenShare && (
-              <div className="p-2 bg-black/50 rounded-b-lg">
+              <div className='p-2 bg-black/50 rounded-b-lg'>
                 <VideoControls
                   isPlaying={isPlaying}
                   currentTime={currentTime}
@@ -422,14 +440,14 @@ function WorkoutContent() {
         </div>
 
         <div
-          className="transition-all duration-300 flex items-start justify-center bg-black h-full pt-8"
+          className='transition-all duration-300 flex items-start justify-center bg-black h-full pt-8'
           style={{
             width: webcamContainerWidth,
             padding: settings.hideWebcam ? "0" : "1rem",
             overflow: "hidden",
           }}
         >
-          <div className="w-full max-w-full">
+          <div className='w-full max-w-full'>
             <WebcamCanvas
               videoRef={webcamVideoRef}
               isActive={isWebcamActive}
@@ -437,7 +455,7 @@ function WorkoutContent() {
               landmarker={webcamLandmarker}
             />
             {!isScreenShare && (
-              <div className="p-2" style={{ visibility: "hidden" }}>
+              <div className='p-2' style={{ visibility: "hidden" }}>
                 <VideoControls
                   isPlaying={false}
                   currentTime={0}
@@ -453,7 +471,10 @@ function WorkoutContent() {
 
       <TimelineClipper ref={timelineClipperRef} />
 
-      <SimilarityDisplay similarityValue={similarityValue} />
+      <SimilarityDisplay
+        similarityValue={similarityValue}
+        showFeedback={showFeedback}
+      />
 
       <WorkoutSettingsModal
         isOpen={isSettingsOpen}
@@ -480,10 +501,10 @@ export default function WorkoutPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen bg-black">
-          <div className="p-8 text-center bg-gray-900 rounded-lg shadow-lg border border-white/10">
-            <div className="w-10 h-10 mx-auto mb-4 border-4 border-blue-400 rounded-full border-t-transparent animate-spin"></div>
-            <p className="text-gray-300">페이지를 불러오는 중...</p>
+        <div className='flex items-center justify-center min-h-screen bg-black'>
+          <div className='p-8 text-center bg-gray-900 rounded-lg shadow-lg border border-white/10'>
+            <div className='w-10 h-10 mx-auto mb-4 border-4 border-blue-400 rounded-full border-t-transparent animate-spin'></div>
+            <p className='text-gray-300'>페이지를 불러오는 중...</p>
           </div>
         </div>
       }
